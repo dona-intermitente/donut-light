@@ -23,7 +23,7 @@ renderer.toneMappingExposure = 2;
 document.body.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color( 0x030005 );
+scene.background = new THREE.Color(0x030005);
 
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 200);
 camera.position.z = -3;
@@ -68,7 +68,13 @@ new GLTFLoader().load('donut.glb', function (gltf) {
     scene.add(model);
     model.children.forEach(e => {
         e.layers.enable(BLOOM_SCENE);
+        const checkBox = document.getElementById("myCheck");
+        checkBox.addEventListener('click', myFunction);
+        function myFunction() {
+            e.layers.toggle(BLOOM_SCENE);
+        }
     });
+    render();
 });
 
 const geometry2 = new THREE.PlaneGeometry(6, 6, 6);
@@ -86,7 +92,7 @@ function render() {
     scene.traverse(restoreMaterial);
     finalComposer.render();
     requestAnimationFrame(render);
-	controls.update();
+    controls.update();
 }
 
 function darkenNonBloomed(obj) {
@@ -110,10 +116,10 @@ window.onresize = function () {
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
 
-    renderer.setSize( width, height );
+    renderer.setSize(width, height);
 
-    bloomComposer.setSize( width, height );
-    finalComposer.setSize( width, height );
+    bloomComposer.setSize(width, height);
+    finalComposer.setSize(width, height);
 
     render();
 };
