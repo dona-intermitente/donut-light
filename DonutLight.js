@@ -34,6 +34,9 @@ controls.minDistance = 2;
 controls.maxDistance = 5;
 
 scene.add(new THREE.AmbientLight(0x404040));
+const light = new THREE.PointLight(0xffffff);
+light.position.y = 3;
+scene.add(light);
 
 const renderScene = new RenderPass(scene, camera);
 
@@ -70,19 +73,29 @@ new GLTFLoader().load('donut.glb', function (gltf) {
         e.layers.enable(BLOOM_SCENE);
         const checkBox = document.getElementById("myCheck");
         checkBox.addEventListener('click', myFunction);
+        const donutMaterial = e.material.color;
         function myFunction() {
             e.layers.toggle(BLOOM_SCENE);
+            if (checkBox.checked == true) {
+                light.intensity = 1;
+                e.material.color = donutMaterial;
+            } else {
+                light.intensity = 0.5;
+                e.material.color = new THREE.Color(0xffffff);
+            }
         }
     });
     render();
 });
 
-const geometry2 = new THREE.PlaneGeometry(6, 6, 6);
-const material2 = new THREE.MeshPhysicalMaterial({ color: 0x220E34 });
-const plane = new THREE.Mesh(geometry2, material2);
-plane.rotateX(-1.6);
-plane.position.y = -2;
-scene.add(plane);
+const geometry2 = new THREE.BoxGeometry(10, 10, 10);
+const material2 = new THREE.MeshPhysicalMaterial({ 
+    color: 0x220E34,
+    roughness: 0.6,
+    metalness: 0.6,
+    side: THREE.DoubleSide });
+const box = new THREE.Mesh(geometry2, material2);
+scene.add(box);
 
 render();
 
