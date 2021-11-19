@@ -89,11 +89,12 @@ new GLTFLoader().load('donut.glb', function (gltf) {
 });
 
 const geometry2 = new THREE.BoxGeometry(10, 10, 10);
-const material2 = new THREE.MeshPhysicalMaterial({ 
+const material2 = new THREE.MeshPhysicalMaterial({
     color: 0x220E34,
     roughness: 0.6,
     metalness: 0.6,
-    side: THREE.DoubleSide });
+    side: THREE.DoubleSide
+});
 const box = new THREE.Mesh(geometry2, material2);
 scene.add(box);
 
@@ -106,6 +107,11 @@ function render() {
     finalComposer.render();
     requestAnimationFrame(render);
     controls.update();
+
+    const time = Date.now() * 0.001;
+
+    scene.rotation.x = Math.sin(time / 4);
+    scene.rotation.y = Math.sin(time / 2);
 }
 
 function darkenNonBloomed(obj) {
